@@ -1,0 +1,146 @@
+服务 
+   在 AngularJS 中，服务是一个函数或对象，可在你的 AngularJS 应用中使用。 
+    $location
+        var app = angular.module('myApp', []);
+        controller('customersCtrl', function($scope, $location) {
+             $scope.myUrl = $location.absUrl();
+        }); 
+        注意 $location 服务是作为一个参数传递到 controller 中。如果要使用它，需要在 controller 中定义
+    $http
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function($scope, $http) {
+            $http.get("welcome.htm").then(function (response) {
+                $scope.myWelcome = response.data;
+            });
+                });
+    $timeout
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function($scope, $timeout) {
+            $scope.myHeader = "Hello World!";
+            $timeout(function () {
+                $scope.myHeader = "How are you today?";
+            }, 2000);       
+        });
+    $interval
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function($scope, $interval) {
+            $scope.theTime = new Date().toLocaleTimeString();
+            $interval(function () {
+                $scope.theTime = new Date().toLocaleTimeString();
+            }, 1000);
+        });  
+
+    创建自定义服务
+        创建
+            app.service('hexafy', function() {
+            this.myFunc = function (x) {
+                return x.toString(16);
+                }
+            });
+        要使用自定义服务，需要在定义控制器的时候独立添加，设置依赖关系: 
+            app.controller('myCtrl', function($scope, hexafy) {
+                $scope.hex = hexafy.myFunc(255);
+            });
+    核心服务$http
+        使用格式
+            $http({
+                method: 'GET',
+                url: '/someUrl'
+            }).then(function successCallback(response) {
+                请求成功执行的代码
+            },function errorCallbak(response) {
+                请求失败执行代码
+            })
+        简写格式
+            $http.get('/someUrl', config).then(successCallback, errorCallbak);
+            $http.post('/someUrl', data, config).then(successCallbak, errorCallbak);
+
+
+模块
+    模块定义了一个应用程序。 
+    模块是应用程序中不同部分的容器。
+    模块是应用控制器的容器。
+    控制器通常属于一个模块。
+
+    创建模块
+        通过angular.module函数来创建模块
+        <div ng-app="myApp">...</div>
+        <script>
+        var app = angular.module("myApp", []); 
+        </script>
+    添加控制器
+        <div ng-app="myApp" ng-controller="myCtrl">
+        {{ firstName + " " + lastName }}
+        </div>
+        <script>
+        var app = angular.module("myApp", []);
+        app.controller("myCtrl", function($scope) {
+            $scope.firstName = "John";
+            $scope.lastName = "Doe";
+        });
+        </script>   
+    添加指令
+        <div ng-app="myApp" runoob-directive></div>
+        <script> 
+        var app = angular.module("myApp", []);
+        app.directive("runoobDirective", function() {
+            return {
+                template : "我在指令构造器中创建!"
+            };
+        });
+        </script>       
+
+依赖注入
+    value 是一个简单的 javascript 对象，用于向控制器传递值（配置阶段）
+        // 定义一个模块
+        var mainApp = angular.module("mainApp", []);
+        // 创建 value 对象 "defaultInput" 并传递数据
+        mainApp.value("defaultInput", 5);
+        ...
+        // 将 "defaultInput" 注入到控制器
+        mainApp.controller('CalcController', function($scope, CalcService, defaultInput)        {
+           $scope.number = defaultInput;
+           $scope.result = CalcService.square($scope.number);
+           $scope.square = function() {
+              $scope.result = CalcService.square($scope.number);
+           }    
+    factory  是一个函数用于返回值。在 service 和 controller 需要时创建
+        // 定义一个模块
+        var mainApp = angular.module("mainApp", []);
+        // 创建 factory "MathService" 用于两数的乘积 provides a method multiply to return       multiplication of two numbers
+        mainApp.factory('MathService', function() {
+           var factory = {};
+           factory.multiply = function(a, b) {
+              return a * b
+           }
+           return factory;
+        }); 
+        // 创建自定义服务 然后在 service 中注入 factory "MathService"
+        mainApp.service('CalcService', function(MathService){
+           this.square = function(a) {
+              return MathService.multiply(a,a);
+           }
+        });
+    provider 
+             AngularJS 中通过 provider 创建一个 service、factory等(配置阶段)。
+             Provider 中提供了一个 factory 方法 get()，它用于返回 value/service/factory。
+        // 定义一个模块
+        var mainApp = angular.module("mainApp", []);
+        ...
+        // 使用 provider 创建 service 定义一个方法用于计算两数乘积
+        mainApp.config(function($provide) {
+           $provide.provider('MathService', function() {
+              this.$get = function() {
+                 var factory = {};  
+                 factory.multiply = function(a, b) {
+                    return a * b; 
+                 }
+                 return factory;
+              };
+           });
+        });            
+    constant (常量)用来在配置阶段传递数值，注意这个常量在配置阶段是不可用的。
+        mainApp.constant("configParam", "constant value");
+
+路由
+    AngularJS 路由就通过 #! + 标记 帮助我们区分不同的逻辑页面并将不同的页面绑定到对应的控制器上。

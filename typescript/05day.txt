@@ -1,0 +1,55 @@
+typescritp中的class类
+
+    区分类和对象
+    > 类是抽象的，它描述了一些属性和方法
+    > 对象是具体的，它引申于类
+
+    构造函数方式创建类
+    function Obj() {
+        this.name = "vicky";
+        this.say = funcion() {
+            alert('我是vicky')
+        }
+    }
+    let obj1 = new Obj();
+    console.log(obj1.name)
+
+    通过class创建类
+    class Cat {
+        name: string;
+        fur: string;
+        contructor(name: string, fur: string) {
+            this.name = name;
+            this.fur = fur
+        }
+        miao () {
+            consoel.log('我叫' + this.name + ',我的毛发颜色是' + this.fur + ',喵喵喵~~')
+        }
+    }
+    let myCat = new Cat('mini', 'yellow')
+    myCat.miao()
+
+    继承
+    class Car {
+    move (distance: number) {
+        console.log('行驶了'+distance+'公里')
+        }
+    }
+    class MINI extends Car {
+        speed: number;
+        constructor(speed: number) {
+            //注意：派生类使用constructor时，要使用super
+            super()
+            this.speed = speed
+        }
+        move (distance: number) {
+            console.log('速度为'+distance+'公里每小时')
+        }
+    }
+    let minicooper = new MINI(300)
+    minicooper.move(3000)
+    MINI 继承了车类的move函数，实例minicooper这个对象，注意派生类MINI在使用constructor函数时，要使用super，
+    他会执行基类的构造函数，在使用this之前，必须调用super()
+    而且在派生类中我们重写了move函数,这使得当我们定义了更多的派生类是，可根据需求重写该方法
+    
+    

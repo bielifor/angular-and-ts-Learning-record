@@ -1,0 +1,79 @@
+TypeScript基础类型
+
+    布尔值
+    let isTrue: boolean = false
+    
+    数字
+    除了支持十进制和十六进制字面量，Typescript还支持ECMAScript 2015中引入的二进制和八进制字面量。
+    let num: number = 6
+
+    字符串
+    let name: string = "bob"
+
+    数组
+    let list: number[] = [1, 2, 3]
+    let list:Array<number> = [1, 2, 3]       (数组泛型声明方式)
+
+    元组Tuple
+    元组类型允许表示一个已知元素数量和类型的数组，各元素的类型不必相同
+    let x: [string, number]
+    x = ['hello', 10]   (不能颠倒顺序)
+
+    枚举
+    enum Color {Red,  Greed,  Blue}
+    let c: Color = Color.Green
+
+    任意值 (any)
+    let notSure: any = 4
+
+    空值 (一般用来修饰当函数没有返回值的时候.,只能为它赋予undefined和null)
+    function nice(): void { }
+    
+    Null和Undefined
+    let u: undefined = undefined
+    let n: null = null
+
+    Never 
+    never类型表示的是那些永不存在的值的类型。
+     // 返回never的函数必须存在无法达到的终点
+    
+    类型断言
+        ·尖括号语法
+        let someValue: any = "this is a string"
+        let strLength: number = (<string>someValue).length
+        as语法
+        let someValue: any = "this is a string"
+        let strLength: number = (someValue as string).length
+
+        
+TypeScript变量声明
+    let
+
+    函数声明
+    type C = {a: string, b?: number}
+    function f({a, b}: c): void { }
+
+TypeScript接口
+    
+    interface LabelledValue {
+        label: string;
+    }
+    function printLabel(labelledObj: LabelleValue) {
+        console.log(labelledObj.label)
+    }
+    let myObj = {size: 10, label: "Size 10 Object"}
+    printLabel(myObj)
+
+    类类型（项目中用到的，其它的类型可以去看文档）
+    TypeScript能够用它来明确的强制一个类去符合某种契约
+    
+        interface ClockInterface {
+                currentTime：Date
+        }
+        class Clock implements ClockInterface {
+                currentTime:  Date
+                constructor(h: number, m: number) { }
+        } 
+
+       接口继承类
+       当接口继承了一个类类型时，它会继承类的成员但不包括其实现。 就好像接口声明了所有类中存在的成员，但并没有提供具体实现一样。 接        口同样会继承到类的private和protected成员。 这意味着当你创建了一个接口继承了一个拥有私有或受保护的成员的类时，这个接口类型          只能被这个类或其子类所实现
